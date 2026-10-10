@@ -1,0 +1,13 @@
+# No certificate yet: plain HTTP, so that certbot can pass the challenge and the panel is reachable.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${DOMAIN};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    include /etc/nginx/taiga/proxy.conf;
+}

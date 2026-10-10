@@ -1,0 +1,52 @@
+services:
+  taiga-web:
+    build:
+      context: .
+      additional_contexts:
+        # Linux build of the Taiga core (`npm run core` in ~/taiga)
+        core: ${TAIGA_CORE_DIR:-../taiga/resources/linux}
+    image: taiga-web
+    container_name: taiga-web
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8787
+      DATA_DIR: /data
+      TAIGA_CORE: /opt/taiga/taiga-core-linux-amd64
+      # Behind nginx: the client's address comes from X-Forwarded-For
+      TRUST_PROXY: "1"
+    # Outside only through nginx; the port stays open on the server itself
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - ./data:/data
+
+  nginx:
+    image: nginx:1.30
+    container_name: taiga-nginx
+    restart: unless-stopped
+    depends_on:
+      - taiga-web
+    environment:
+      DOMAIN: ${DOMAIN:-}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/40-taiga.sh:/docker-entrypoint.d/40-taiga.sh:ro
+      - ./nginx/panel.conf.template:/etc/nginx/taiga/panel.conf.template:ro
+      - ./nginx/bootstrap.conf.template:/etc/nginx/taiga/bootstrap.conf.template:ro
+      - ./nginx/proxy.conf:/etc/nginx/taiga/proxy.conf:ro
+      - ./nginx/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/www:/var/www/certbot:ro
+
+  # Renews the certificate twice a day; the first one is issued by hand (README, «nginx и HTTPS»)
+  certbot:
+    image: certbot/certbot:v3.0.1
+    container_name: taiga-certbot
+    restart: unless-stopped
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done'
+    volumes:
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/www:/var/www/certbot

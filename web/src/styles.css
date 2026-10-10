@@ -1,0 +1,187 @@
+@import 'tailwindcss';
+@import '@fontsource/tektur/cyrillic-500.css';
+@import '@fontsource/tektur/cyrillic-700.css';
+@import '@fontsource/tektur/latin-500.css';
+@import '@fontsource/tektur/latin-700.css';
+@import '@fontsource/jetbrains-mono/cyrillic-400.css';
+@import '@fontsource/jetbrains-mono/cyrillic-600.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-600.css';
+
+/*
+ * Emoji flags as pictures: Windows has no flag glyphs and shows "DE" instead of the flag.
+ * unicode-range keeps the font to the flags alone; the server gives it at /sub/_/flags.woff2.
+ */
+@font-face {
+  font-family: 'Twemoji Country Flags';
+  src: url('/sub/_/flags.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+1F1E6-1F1FF, U+1F3F4, U+E0062-E007F;
+}
+
+/*
+ * Cyberpunk, dark only (the brief): near-black steel, one acid-yellow accent,
+ * cyan kept for live/system state, red and green only for real status.
+ * Every frame is chamfered: one shape for the whole panel.
+ */
+@theme {
+  --font-display: 'Twemoji Country Flags', 'Tektur', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Taiga Emoji', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Twemoji Country Flags', 'JetBrains Mono', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Taiga Emoji', ui-monospace, monospace;
+  --font-sans: 'Twemoji Country Flags', 'JetBrains Mono', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Taiga Emoji', ui-monospace, monospace;
+
+  --color-void: #07080c;
+  --color-steel: #0e1118;
+  --color-plate: #141924;
+  --color-wire: #252d3d;
+  --color-dim: #8a93a8;
+  --color-ink: #e6e9f0;
+  --color-acid: #f2e94e;
+  --color-acid-deep: #c9c033;
+  --color-cyan: #3fd7e8;
+  --color-ok: #4fe08a;
+  --color-bad: #ff4d6a;
+  --color-warn: #ffab3d;
+}
+
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A faint grid and scanlines on a fixed layer: never on scrolling content. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgb(63 215 232 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(63 215 232 / 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 30% 0%, black 30%, transparent 75%);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.12) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: var(--color-void);
+}
+
+/* The one shape: a cut top-left and bottom-right corner. */
+.chamfer {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+.chamfer-sm {
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+}
+
+/* A framed panel: the border is a second chamfered layer under the face. */
+.frame {
+  position: relative;
+  background: var(--color-wire);
+  padding: 1px;
+}
+.frame > .face {
+  background: linear-gradient(160deg, var(--color-plate), var(--color-steel) 60%);
+}
+
+.glow-acid {
+  text-shadow: 0 0 18px rgb(242 233 78 / 0.35);
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-mono);
+}
+
+/* clip-path cuts an outline: the chamfered controls ring inside instead. */
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+.chamfer:focus-visible,
+.chamfer-sm:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-cyan);
+}
+/* Inputs draw their frame with a box-shadow ring: on focus the rule above turns it cyan, never off. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  .blink {
+    animation: blink 1.1s steps(2, start) infinite;
+  }
+  .scan {
+    position: relative;
+    overflow: hidden;
+  }
+  .scan::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(63 215 232 / 0.18), transparent);
+    transform: translateX(-100%);
+    animation: scan 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  .glitch:hover {
+    animation: glitch 0.32s steps(2) 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes scan {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes glitch {
+  0% {
+    transform: translate(1px, -1px);
+    text-shadow: -2px 0 var(--color-cyan), 2px 0 var(--color-bad);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+    text-shadow: 2px 0 var(--color-cyan), -2px 0 var(--color-bad);
+  }
+  100% {
+    transform: none;
+    text-shadow: none;
+  }
+}
