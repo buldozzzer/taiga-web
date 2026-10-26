@@ -17,8 +17,9 @@ services:
       # Behind nginx: the client's address comes from X-Forwarded-For
       TRUST_PROXY: "1"
     # Outside only through nginx; the port stays open on the server itself
+    # (PANEL_BIND in .env publishes it elsewhere)
     ports:
-      - "127.0.0.1:8787:8787"
+      - "${PANEL_BIND:-127.0.0.1:8787}:8787"
     volumes:
       - ./data:/data
 
