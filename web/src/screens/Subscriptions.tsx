@@ -272,7 +272,7 @@ function SubscriptionRow({
 
       {preview !== null && (
         <Confirm title={`Текст подписки «${subTitle(s)}»`} confirm="Закрыть" tone="ghost" onConfirm={() => setPreview(null)} onCancel={() => setPreview(null)}>
-          <pre className="chamfer-sm bg-void p-3 text-[12px] text-cyan whitespace-pre-wrap break-all max-h-[50dvh] overflow-auto">{preview}</pre>
+          <pre className="chamfer-sm bg-void p-3 font-mono text-[12px] text-cyan whitespace-pre-wrap break-all max-h-[50dvh] overflow-auto">{preview}</pre>
           <p className="mt-3 text-[12px]">Внутри ключи шифрования: адрес подписки передавайте только своим.</p>
         </Confirm>
       )}
@@ -326,7 +326,7 @@ function History({id}: {id: string}) {
     <div className="grid gap-4">
       <div className="grid gap-2">
         <div className="flex flex-wrap justify-between gap-2 text-[12px] text-dim">
-          <span className="uppercase tracking-[0.14em]">Чтения за 30 дней, UTC</span>
+          <span className="font-medium">Чтения за 30 дней, UTC</span>
           <span>
             <span className="text-acid">■</span> чтения · <span className="text-cyan">■</span> разных IP
           </span>
@@ -531,7 +531,7 @@ function Editor({
         </div>
       </div>
       <fieldset className="grid gap-3">
-        <legend className="text-[12px] uppercase tracking-[0.12em] text-dim mb-3">Ноды в подписке</legend>
+        <legend className="text-[13px] font-medium text-dim mb-3">Ноды в подписке</legend>
         {locked.nodeIds && (
           <p className="text-[12px] -mt-1">
             <EnvNote name={locked.nodeIds} />

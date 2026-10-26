@@ -127,9 +127,9 @@ export function Wizard({status}: {status: PanelStatus | null}) {
           </ol>
           <div className="grid gap-4 content-start">
             {view.busy && (
-              <div className="chamfer-sm scan bg-cyan/10 text-cyan px-4 py-3" role="status">
+              <div className="chamfer-sm flex items-center gap-3 bg-cyan/10 ring-1 ring-inset ring-cyan/25 text-cyan px-4 py-3" role="status">
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-current scan" />
                 {view.busy}
-                <span className="blink">_</span>
               </div>
             )}
             {view.error && <Banner tone="error">{view.error}</Banner>}
@@ -213,7 +213,7 @@ function ServerStep({view, send, status}: {view: WizardView; send: Send; status:
               <button
                 key={`${s.host}:${s.port}`}
                 onClick={() => set({host: s.host, port: String(s.port), user: s.user})}
-                className="chamfer-sm px-3 py-1 text-[12px] bg-wire/50 text-dim hover:text-acid"
+                className="chamfer-sm px-3 py-1 text-[12px] bg-wire/50 text-dim hover:text-ink"
               >
                 {s.user}@{s.host}
                 {s.port !== 22 && `:${s.port}`}
@@ -224,7 +224,7 @@ function ServerStep({view, send, status}: {view: WizardView; send: Send; status:
         {status?.remnawave.connected && (
           <div className="grid gap-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-dim text-[12px] uppercase tracking-[0.14em]">Ноды Remnawave {remnawave.nodes ? `· ${remnawave.nodes.length}` : ''}</span>
+              <span className="text-dim text-[13px] font-medium">Ноды Remnawave {remnawave.nodes ? `· ${remnawave.nodes.length}` : ''}</span>
               {(remnawave.nodes?.length ?? 0) > 12 && (
                 <Input value={nodeQuery} onChange={e => setNodeQuery(e.target.value)} placeholder="Найти: страна, имя, адрес" aria-label="Найти ноду" className="!h-8 !w-56 text-[12px]" />
               )}
@@ -242,7 +242,7 @@ function ServerStep({view, send, status}: {view: WizardView; send: Send; status:
                     onClick={() => set({host: n.address, port: '22', ...(form.useKey && form.useSavedKey ? {user: view.savedKeyUser} : {})})}
                     title={n.taigaNodeId ? `Taiga уже стоит: ${n.taigaNodeName}` : n.address}
                     aria-pressed={form.host === n.address}
-                    className={`chamfer-sm px-3 py-1 text-[12px] bg-wire/50 hover:text-acid ${form.host === n.address ? 'text-acid' : 'text-dim'}`}
+                    className={`chamfer-sm px-3 py-1 text-[12px] bg-wire/50 hover:text-ink ${form.host === n.address ? 'text-acid' : 'text-dim'}`}
                   >
                     {flagged(n)}
                     {n.taigaNodeId && <span className="text-ok"> · Taiga</span>}
@@ -329,7 +329,7 @@ function ServerStep({view, send, status}: {view: WizardView; send: Send; status:
             ) : (
               <p>Сверьте отпечаток ключа с тем, что показывает панель хостера или команда ssh-keygen -lf на сервере.</p>
             )}
-            <p className="chamfer-sm bg-void px-3 py-2 text-cyan text-[12px] break-all flex gap-2">
+            <p className="chamfer-sm bg-void px-3 py-2 font-mono text-cyan text-[12px] break-all flex gap-2">
               <KeyIcon size={16} className="shrink-0" />
               {view.hostKeyPrompt.fingerprint}
             </p>
@@ -505,7 +505,7 @@ function PlanStep({view, send}: {view: WizardView; send: Send}) {
       {plan && (
         <div className="grid gap-5 md:grid-cols-2">
           <div className="grid gap-2 content-start">
-            <p className="text-[12px] uppercase tracking-[0.12em] text-dim">Сделает</p>
+            <p className="text-[13px] font-medium text-dim">Сделает</p>
             <ul className="grid gap-2">
               {(plan.actions ?? []).map((a, i) => (
                 <li key={i} className="flex gap-2 leading-relaxed">
@@ -517,7 +517,7 @@ function PlanStep({view, send}: {view: WizardView; send: Send}) {
           </div>
           {!!plan.untouched?.length && (
             <div className="grid gap-2 content-start">
-              <p className="text-[12px] uppercase tracking-[0.12em] text-dim">Не тронет</p>
+              <p className="text-[13px] font-medium text-dim">Не тронет</p>
               <ul className="grid gap-2 text-dim">
                 {plan.untouched.map((a, i) => (
                   <li key={i} className="leading-relaxed">
@@ -610,7 +610,7 @@ function ResultStep({view, send, onNew}: {view: WizardView; send: Send; onNew: (
       </div>
       {view.uninstallCommand && (
         <div className="grid gap-2">
-          <p className="text-[12px] uppercase tracking-[0.12em] text-dim">Удаление на сервере без панели</p>
+          <p className="text-[13px] font-medium text-dim">Удаление на сервере без панели</p>
           <CopyLine value={view.uninstallCommand} />
         </div>
       )}

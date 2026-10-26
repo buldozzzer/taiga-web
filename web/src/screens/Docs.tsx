@@ -130,7 +130,7 @@ export function Docs({status}: {status: PanelStatus | null}) {
                         </div>
                         <div className="flex gap-2 shrink-0">
                           {d.publicUrl && (
-                            <a href={d.publicUrl} target="_blank" rel="noreferrer noopener" className="chamfer-sm grid place-items-center size-9 bg-wire/50 text-dim hover:text-acid" title="Открыть на Диске" aria-label="Открыть на Диске">
+                            <a href={d.publicUrl} target="_blank" rel="noreferrer noopener" className="chamfer-sm grid place-items-center size-9 bg-wire/50 text-dim hover:text-ink" title="Открыть на Диске" aria-label="Открыть на Диске">
                               <ArrowSquareOutIcon size={16} />
                             </a>
                           )}

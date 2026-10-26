@@ -24,26 +24,27 @@ export function Login({onDone}: {onDone: () => void}) {
 
   return (
     <div className="min-h-[100dvh] grid md:grid-cols-[1.1fr_1fr]">
-      <section className="hidden md:flex flex-col justify-between p-12 border-r border-wire bg-[radial-gradient(ellipse_at_10%_10%,rgb(242_233_78/0.10),transparent_55%),radial-gradient(ellipse_at_90%_100%,rgb(63_215_232/0.10),transparent_50%)]">
-        <p className="font-display text-xl font-bold text-acid tracking-tight">
-          TAIGA<span className="text-cyan">//</span>
+      <section className="hidden md:flex flex-col justify-between p-12 border-r border-wire bg-steel bg-[radial-gradient(ellipse_at_15%_10%,rgb(232_196_104/0.08),transparent_60%)]">
+        <p className="font-display text-xl font-semibold tracking-[-0.02em] text-ink">
+          Taiga<span className="text-acid">.</span>
         </p>
         <div className="grid gap-5 max-w-[30rem]">
-          <h1 className="font-display text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-ink">
-            Ноды, подписки <span className="text-acid glow-acid">и каналы</span> в одном месте
+          <h1 className="font-display text-5xl lg:text-[56px] font-semibold leading-[1.08] tracking-[-0.03em] text-ink">
+            Ноды, подписки <span className="text-acid">и каналы</span> в одном месте
           </h1>
           <p className="text-dim leading-relaxed">Ставит выход на ваш сервер, создаёт документы на Яндекс Диске и раздаёт подписки клиентам Taiga.</p>
         </div>
-        <p className="text-[12px] text-dim">
-          доступ только для оператора<span className="blink text-acid">_</span>
-        </p>
+        <p className="text-[13px] text-dim">Доступ только для оператора</p>
       </section>
       <section className="grid place-items-center p-4">
         <form onSubmit={submit} className="w-full max-w-sm grid gap-6 rise">
-          <div className="md:hidden font-display text-2xl font-bold text-acid">
-            TAIGA<span className="text-cyan">//</span>
+          <div className="md:hidden font-display text-2xl font-semibold tracking-[-0.02em] text-ink">
+            Taiga<span className="text-acid">.</span>
           </div>
-          <h2 className="font-display text-2xl text-ink">Вход</h2>
+          <div className="grid gap-1">
+            <h2 className="font-display text-2xl font-semibold text-ink">Вход</h2>
+            <p className="text-dim">Введите пароль оператора панели.</p>
+          </div>
           <Field label="Пароль оператора" error={error}>
             {id => <Input id={id} type="password" autoComplete="current-password" autoFocus value={password} onChange={e => setPassword(e.target.value)} />}
           </Field>

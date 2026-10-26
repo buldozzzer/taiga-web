@@ -54,9 +54,7 @@ export function Journal() {
             ))}
           </ol>
         ) : (
-          <p className="text-dim">
-            Пока пусто<span className="blink text-acid">_</span>
-          </p>
+          <p className="text-dim">Пока пусто: события появятся здесь, как только панель что-то сделает.</p>
         )}
       </Panel>
     </>

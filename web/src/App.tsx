@@ -55,14 +55,14 @@ export function App() {
 
   return (
     <div className="min-h-[100dvh] md:grid md:grid-cols-[232px_1fr]">
-      <aside className="md:sticky md:top-0 md:h-[100dvh] flex md:flex-col border-b md:border-b-0 md:border-r border-wire bg-steel/70 backdrop-blur">
+      <aside className="md:sticky md:top-0 md:h-[100dvh] flex md:flex-col border-b md:border-b-0 md:border-r border-wire bg-steel">
         <div className="hidden md:block px-5 pt-6 pb-8">
-          <p className="font-display text-2xl font-bold text-acid glow-acid tracking-tight">
-            TAIGA<span className="text-cyan">//</span>
+          <p className="font-display text-[22px] font-semibold tracking-[-0.02em] text-ink">
+            Taiga<span className="text-acid">.</span>
           </p>
-          <p className="text-[12px] text-dim mt-1">панель оператора</p>
+          <p className="text-[13px] text-dim mt-0.5">панель оператора</p>
         </div>
-        <nav className="flex md:flex-col flex-1 overflow-x-auto md:overflow-visible" aria-label="Разделы">
+        <nav className="flex md:flex-col md:gap-1 md:px-3 flex-1 overflow-x-auto md:overflow-visible" aria-label="Разделы">
           {NAV.map(n => (
             <a
               key={n.route}
@@ -70,8 +70,8 @@ export function App() {
               aria-current={route === n.route ? 'page' : undefined}
               aria-label={n.label}
               title={n.label}
-              className={`glitch flex flex-1 md:flex-none items-center justify-center md:justify-start gap-3 px-3 md:px-5 h-12 md:h-11 min-w-11 text-[13px] uppercase tracking-[0.08em] border-b-2 md:border-b-0 md:border-l-2 transition-colors ${
-                route === n.route ? 'border-acid text-acid bg-acid/5' : 'border-transparent text-dim hover:text-ink hover:bg-wire/30'
+              className={`flex flex-1 md:flex-none items-center justify-center md:justify-start gap-3 px-3 h-12 md:h-10 min-w-11 md:rounded-[10px] text-[14px] border-b-2 md:border-b-0 transition-colors ${
+                route === n.route ? 'border-acid text-ink md:bg-wire/70 font-medium [&>svg]:text-acid' : 'border-transparent text-dim hover:text-ink md:hover:bg-wire/35'
               }`}
             >
               {n.icon}
@@ -79,20 +79,24 @@ export function App() {
             </a>
           ))}
         </nav>
-        <div className="hidden md:grid gap-3 px-5 py-5 border-t border-wire text-[12px]">
+        <div className="hidden md:grid gap-2.5 px-5 py-5 border-t border-wire text-[13px]">
           {status && (
             <>
-              <p className={`truncate ${status.core.ok ? 'text-ok' : 'text-bad'}`} title={`${status.core.version}\n${status.core.path}`}>
-                ядро: {status.core.ok ? status.core.version.split('+')[0] : 'не найдено'}
+              <p className="flex items-center gap-2 min-w-0 text-dim" title={`${status.core.version}\n${status.core.path}`}>
+                <span aria-hidden className={`size-2 shrink-0 rounded-full ${status.core.ok ? 'bg-ok' : 'bg-bad'}`} />
+                <span className="truncate">Ядро: {status.core.ok ? status.core.version.split('+')[0] : 'не найдено'}</span>
               </p>
-              <p className={status.yandex.connected ? 'text-ok' : 'text-dim'}>диск {status.yandex.connected ? status.yandex.user : 'не подключён'}</p>
+              <p className="flex items-center gap-2 min-w-0 text-dim">
+                <span aria-hidden className={`size-2 shrink-0 rounded-full ${status.yandex.connected ? 'bg-ok' : 'bg-wire'}`} />
+                <span className="truncate">Диск: {status.yandex.connected ? status.yandex.user : 'не подключён'}</span>
+              </p>
             </>
           )}
           <button
             onClick={() => post('/api/logout').finally(() => setAuthed(false))}
             className="flex items-center gap-2 text-dim hover:text-bad transition-colors justify-self-start"
           >
-            <SignOutIcon size={16} /> выйти
+            <SignOutIcon size={16} /> Выйти
           </button>
         </div>
         <button

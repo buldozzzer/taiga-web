@@ -127,8 +127,8 @@ function RemnawaveSettings({settings, connected, busy, run}: {settings: PanelSet
       {connected && (
         <div className="grid gap-2">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-dim text-[12px] uppercase tracking-[0.14em]">Ноды {nodes ? `· ${nodes.length}` : ''}</span>
-            <button type="button" onClick={() => void reload()} className="text-dim hover:text-acid inline-flex items-center gap-1 text-[12px]" disabled={loading}>
+            <span className="text-dim text-[13px] font-medium">Ноды {nodes ? `· ${nodes.length}` : ''}</span>
+            <button type="button" onClick={() => void reload()} className="text-dim hover:text-ink inline-flex items-center gap-1 text-[12px]" disabled={loading}>
               <ArrowsClockwiseIcon size={14} className={loading ? 'animate-spin' : ''} /> Обновить
             </button>
           </div>
